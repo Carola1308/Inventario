@@ -9,8 +9,8 @@ namespace Gateways.Data
         {
         }
 
-        DbSet<Gateway> Gateways { get; set; }
-        DbSet<PeripheralDevice> peripheralDevices { get; set; }
+        public DbSet<Gateway> Gateways { get; set; }
+        public DbSet<PeripheralDevice> peripheralDevices { get; set; }
 
     }
 }

@@ -1,5 +1,7 @@
 using Gateways.Data;
+using Gateways.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,10 @@ builder.Services.AddDbContext<InventaryContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("ApiConnection"))
                 .EnableSensitiveDataLogging()
                 .EnableDetailedErrors());
+builder.Services.AddTransient<GatewayService, GatewayService>();
+builder.Services.AddTransient<PeripheralDeviceService, PeripheralDeviceService>();
+
+
 
 var app = builder.Build();
 
@@ -23,7 +29,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
