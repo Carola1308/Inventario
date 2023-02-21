@@ -4,8 +4,9 @@ namespace Gateways.Common.DTO.RequestDTO
 {
     public class PeripheralDeviceRequestDTO
     {
-        [Required]
+        
         public string Vendor { get; set; }        
-        public bool Status { get; set; }
+        public string Status { get; set; }
+        public Guid GatewayId { get; set; }
     }
 }

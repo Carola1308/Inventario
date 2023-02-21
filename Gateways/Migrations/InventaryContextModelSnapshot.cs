@@ -50,7 +50,7 @@ namespace Gateways.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("GatewayId")
+                    b.Property<Guid>("GatewayId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Status")
@@ -69,9 +69,13 @@ namespace Gateways.Migrations
 
             modelBuilder.Entity("Gateways.Data.Entity.PeripheralDevice", b =>
                 {
-                    b.HasOne("Gateways.Data.Entity.Gateway", null)
+                    b.HasOne("Gateways.Data.Entity.Gateway", "Gateway")
                         .WithMany("peripheralDevices")
-                        .HasForeignKey("GatewayId");
+                        .HasForeignKey("GatewayId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Gateway");
                 });
 
             modelBuilder.Entity("Gateways.Data.Entity.Gateway", b =>

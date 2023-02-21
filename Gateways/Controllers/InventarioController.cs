@@ -1,4 +1,5 @@
 ﻿using Gateways.Common.DTO.RequestDTO;
+using Gateways.Common.DTO.ResponseDTO;
 using Gateways.Data.Entity;
 using Gateways.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ namespace Gateways.Controllers
         }
 
         [HttpGet("peripheral-device")]
-        public List<PeripheralDevice> GetAllPeripheralDevice()
+        public List<PeripheralDeviceResponseDTO> GetAllPeripheralDevice()
         {
             return _peripheralDeviceService.GetAllPeripheralDevices();
         }
@@ -45,7 +46,7 @@ namespace Gateways.Controllers
         }
 
         [HttpGet("peripheral-device/{id}")]
-        public ActionResult<PeripheralDevice> GetPeripheralDevice(Guid id)
+        public ActionResult<PeripheralDeviceResponseDTO> GetPeripheralDevice(Guid id)
         {
             var result = _peripheralDeviceService.GetAllPeripheralDevices().FirstOrDefault(periphecalDevice => periphecalDevice.Id == id);
             if (result == null)

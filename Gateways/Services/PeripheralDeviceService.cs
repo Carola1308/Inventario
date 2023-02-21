@@ -1,4 +1,5 @@
 ﻿using Gateways.Common.DTO.RequestDTO;
+using Gateways.Common.DTO.ResponseDTO;
 using Gateways.Data;
 using Gateways.Data.Entity;
 
@@ -15,12 +16,15 @@ namespace Gateways.Services
 
         public PeripheralDevice AddPeripheralDevice(PeripheralDeviceRequestDTO newPeripheralDevice)
         {
+            var gateway = _context.Gateways.FirstOrDefault(g => g.Id == newPeripheralDevice.GatewayId);
+
             var createPeripheralDevice = new PeripheralDevice
             {
                 Id = Guid.NewGuid(),
-                Status= newPeripheralDevice.Status,
+                Status = newPeripheralDevice.Status.ToLower() == "true",
                 Vendor = newPeripheralDevice.Vendor,
                 CreationDate = DateTime.Now,
+                Gateway = gateway
             };
 
             _context.peripheralDevices.Add(createPeripheralDevice);
@@ -28,19 +32,32 @@ namespace Gateways.Services
             return createPeripheralDevice;
         }
 
-        public List<PeripheralDevice> GetAllPeripheralDevices()
+        public List<PeripheralDeviceResponseDTO> GetAllPeripheralDevices()
         {
-            return _context.peripheralDevices.ToList();
+            return _context.peripheralDevices.Select(device => new PeripheralDeviceResponseDTO 
+            {
+                Id = device.Id,
+                Vendor = device.Vendor,
+                Status = device.Status.ToString(),
+                CreationDate = device.CreationDate.ToString("g"),
+            }).ToList();
         }
 
-        public PeripheralDevice GetPeripheralDevice(Guid id)
+        public PeripheralDeviceResponseDTO GetPeripheralDevice(Guid id)
         {
             var result = _context.peripheralDevices.FirstOrDefault(x => x.Id == id);
             if (result == null)
             {
                 throw new Exception("Peripherial Not Found");
             }
-            return result;
+            var device = new PeripheralDeviceResponseDTO 
+            { 
+                Id = result.Id,
+                Vendor= result.Vendor,
+                Status = result.Status.ToString(),
+                CreationDate = result.CreationDate.ToString("g"),
+            };
+            return device;
         }
 
         public PeripheralDevice UpdatePeripheralDevice(Guid Id, PeripheralDeviceRequestDTO newPeripheralDevice)
@@ -51,7 +68,7 @@ namespace Gateways.Services
                 throw new Exception("Peripheral Device not found");
             }
             peripheralDevice1.Vendor = newPeripheralDevice.Vendor;
-            peripheralDevice1.Status = newPeripheralDevice.Status;
+            peripheralDevice1.Status = newPeripheralDevice.Status.ToLower() == "true";
 
             _context.peripheralDevices.Update(peripheralDevice1);
             _context.SaveChanges();

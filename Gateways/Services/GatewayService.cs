@@ -23,11 +23,11 @@ namespace Gateways.Services
                 GatewayName = gateway.GatewayName,
                 IPV4 = gateway.IPV4,
             };
-            foreach (var deviceId in gateway.peripheralDevices)
-            {
+            //foreach (var deviceId in gateway.peripheralDevices)
+            //{
 
-                newGateway.peripheralDevices.Add(_peripheralDeviceService.GetPeripheralDevice(deviceId)); 
-            }
+            //    newGateway.peripheralDevices.Add(_peripheralDeviceService.GetPeripheralDevice(deviceId)); 
+            //}
             _context.Gateways.Add(newGateway);
             _context.SaveChanges();
             return newGateway;
@@ -46,10 +46,10 @@ namespace Gateways.Services
             }
             Gateway.GatewayName = newGateway.GatewayName;
             Gateway.IPV4 = newGateway.IPV4;
-            foreach (var deviceId in newGateway.peripheralDevices)
-            {
-                Gateway.peripheralDevices.Add(_peripheralDeviceService.GetPeripheralDevice(deviceId));
-            }            
+            //foreach (var deviceId in newGateway.peripheralDevices)
+            //{
+            //    Gateway.peripheralDevices.Add(_peripheralDeviceService.GetPeripheralDevice(deviceId));
+            //}            
             _context.Gateways.Update(Gateway);
             _context.SaveChanges();
             return Gateway;
